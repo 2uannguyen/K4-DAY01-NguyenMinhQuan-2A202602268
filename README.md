@@ -29,6 +29,32 @@ macOS và Ubuntu. Không có lệnh cài đặt hệ thống, đường dẫn �
 hành. Chrome và Edge là hai trình duyệt được ưu tiên; Firefox có thể dùng nếu đăng nhập Google/GitHub và
 upload cả thư mục hoạt động bình thường.
 
+## Chạy cục bộ bằng `.venv` (Ubuntu / VS Code)
+
+Nếu dùng môi trường cục bộ, chạy các lệnh sau tại thư mục gốc repository:
+
+```bash
+python3 -m venv .venv  # Chỉ cần khi chưa có .venv.
+# Nếu chạy CPU, cài PyTorch CPU trước để tránh tải các gói CUDA lớn.
+.venv/bin/python -I -m pip install torch torchvision --index-url https://download.pytorch.org/whl/cpu
+.venv/bin/python -I -m pip install -r requirements.txt ipykernel
+.venv/bin/python -I -m ipykernel install --sys-prefix --name day1-venv --display-name "Day 1 (.venv)" --env PYTHONPATH "" --env PYTHONNOUSERSITE 1
+.venv/bin/python -I -m pip check
+```
+
+Trong notebook, chọn **Select Kernel → Day 1 (.venv)** rồi **Restart Kernel** và
+chạy từ ô đầu. Nếu chưa thấy kernel, dùng **Python Environments → .venv/bin/python**
+hoặc tải lại cửa sổ VS Code. Cấu hình `.vscode/settings.json` và `.env.local` chọn
+interpreter trong dự án và xóa `PYTHONPATH` kế thừa cho môi trường Python của VS Code;
+kernel `Day 1 (.venv)` cũng có cấu hình riêng để tránh nạp nhầm thư viện ROS hệ thống.
+
+Nếu terminal đã nạp ROS, dùng `unset PYTHONPATH` trước khi chạy Python trong `.venv`.
+Lệnh `python -I -m pip` ở trên bỏ qua các đường dẫn Python từ môi trường bên ngoài.
+Sau khi cài thư viện, cần khởi động lại kernel đang mở để nhận thư viện mới.
+Notebook tự chọn CPU khi PyTorch không dùng được GPU. Ô lưu Google Drive chỉ chạy
+trong Colab; khi chạy cục bộ, notebook bỏ qua ô này. Ghi môi trường chạy cục bộ
+vào báo cáo theo yêu cầu của bài lab.
+
 ## Mục tiêu học tập
 
 Sau bài thực hành, bạn có thể:
